@@ -1,0 +1,457 @@
+namespace: acmefit
+
+cart:
+  defines: runnable
+  metadata:
+    name: ACME Fit Cart
+    description: Part of ACME Fitness cloud demo.
+    website: https://github.com/vmwarecloudadvocacy/acme_fitness_demo
+    publisher: nooga
+    icon: https://visualpharm.com/assets/690/Clear%20Shopping%20Cart-595b40b65ba036ed117d19bf.svg
+  containers:
+    cart:
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-cart:1.3.1
+      ports:
+      - '5000:5000'
+  variables:
+    auth-mode:
+      env: AUTH_MODE
+      type: string
+      value: '1'
+    cart-port:
+      env: CART_PORT
+      type: string
+      value: '5000'
+    jaeger-agent-host:
+      env: JAEGER_AGENT_HOST
+      type: string
+      value: jaeger
+    jaeger-agent-port:
+      env: JAEGER_AGENT_PORT
+      type: string
+      value: '6831'
+    redis-host:
+      env: REDIS_HOST
+      type: string
+      value: redis-db
+    redis-password:
+      env: REDIS_PASSWORD
+      type: string
+      value: secret
+    redis-port:
+      env: REDIS_PORT
+      type: string
+      value: '6379'
+    user-host:
+      env: USER_HOST
+      type: string
+      value: user
+    user-port:
+      env: USER_PORT
+      type: string
+      value: '8083'
+
+catalog:
+  defines: runnable
+  metadata:
+    name: ACME Fit Catalog
+    description: Part of ACME Fitness cloud demo.
+    website: https://github.com/vmwarecloudadvocacy/acme_fitness_demo
+    publisher: nooga
+    icon: https://visualpharm.com/assets/690/Clear%20Shopping%20Cart-595b40b65ba036ed117d19bf.svg
+  containers:
+    catalog:
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-catalog:1.2.1
+      ports:
+      - '8082:8082'
+  variables:
+    catalog-db-host:
+      env: CATALOG_DB_HOST
+      type: string
+      value: catalog-db
+    catalog-db-password:
+      env: CATALOG_DB_PASSWORD
+      type: string
+      value: secret
+    catalog-db-port:
+      env: CATALOG_DB_PORT
+      type: string
+      value: '27017'
+    catalog-db-username:
+      env: CATALOG_DB_USERNAME
+      type: string
+      value: mongoadmin
+    catalog-port:
+      env: CATALOG_PORT
+      type: string
+      value: '8082'
+    catalog-version:
+      env: CATALOG_VERSION
+      type: string
+      value: v1
+    jaeger-agent-host:
+      env: JAEGER_AGENT_HOST
+      type: string
+      value: jaeger
+    jaeger-agent-port:
+      env: JAEGER_AGENT_PORT
+      type: string
+      value: '6831'
+    users-host:
+      env: USERS_HOST
+      type: string
+      value: user
+    users-port:
+      env: USERS_PORT
+      type: string
+      value: '8083'
+
+catalog-db:
+  defines: runnable
+  metadata:
+    name: ACME Fit Catalog DB
+    description: Part of ACME Fitness cloud demo.
+    website: https://github.com/vmwarecloudadvocacy/acme_fitness_demo
+    publisher: nooga
+    icon: https://visualpharm.com/assets/690/Clear%20Shopping%20Cart-595b40b65ba036ed117d19bf.svg
+  containers:
+    db:
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-catalog-db:latest
+  variables:
+    mongo-initdb-database:
+      env: MONGO_INITDB_DATABASE
+      type: string
+      value: acmefit
+    mongo-initdb-root-password:
+      env: MONGO_INITDB_ROOT_PASSWORD
+      type: string
+      value: secret
+    mongo-initdb-root-username:
+      env: MONGO_INITDB_ROOT_USERNAME
+      type: string
+      value: mongoadmin
+
+front-end:
+  defines: runnable
+  metadata:
+    name: ACME Fit Front End
+    description: Part of ACME Fitness cloud demo.
+    website: https://github.com/vmwarecloudadvocacy/acme_fitness_demo
+    publisher: nooga
+    icon: https://visualpharm.com/assets/690/Clear%20Shopping%20Cart-595b40b65ba036ed117d19bf.svg
+  containers:
+    app:
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-front-end:2.2.0
+      ports:
+      - '3000:3000'
+  variables:
+    cart-host:
+      env: CART_HOST
+      type: string
+      value: cart
+    cart-port:
+      env: CART_PORT
+      type: string
+      value: '5000'
+    catalog-host:
+      env: CATALOG_HOST
+      type: string
+      value: catalog
+    catalog-port:
+      env: CATALOG_PORT
+      type: string
+      value: '8082'
+    jaeger-agent-host:
+      env: JAEGER_AGENT_HOST
+      type: string
+      value: jaeger
+    jaeger-agent-port:
+      env: JAEGER_AGENT_PORT
+      type: string
+      value: '6832'
+    order-host:
+      env: ORDER_HOST
+      type: string
+      value: order
+    order-port:
+      env: ORDER_PORT
+      type: string
+      value: '6000'
+    port:
+      env: PORT
+      type: string
+      value: '3000'
+    users-host:
+      env: USERS_HOST
+      type: string
+      value: user
+    users-port:
+      env: USERS_PORT
+      type: string
+      value: '8083'
+
+jaeger:
+  defines: runnable
+  metadata:
+    name: ACME Fit Jaeger
+    description: Part of ACME Fitness cloud demo.
+    website: https://github.com/vmwarecloudadvocacy/acme_fitness_demo
+    publisher: nooga
+    icon: https://visualpharm.com/assets/690/Clear%20Shopping%20Cart-595b40b65ba036ed117d19bf.svg
+  containers:
+    jaeger:
+      image: jaegertracing/all-in-one:1.11
+      ports:
+      - 14268:14268
+      - 16686:16686
+      - 5778:5778
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5775:5775/udp
+  
+order:
+  defines: runnable
+  metadata:
+    name: ACME Fit Order
+    description: Part of ACME Fitness cloud demo.
+    website: https://github.com/vmwarecloudadvocacy/acme_fitness_demo
+    publisher: nooga
+    icon: https://visualpharm.com/assets/690/Clear%20Shopping%20Cart-595b40b65ba036ed117d19bf.svg
+  containers:
+    order:
+      image: gcr.io/vmwarecloudadvocacy/order-postgres-tracing:3.0
+      ports:
+      - '6000:6000'
+  variables:
+    auth-mode:
+      env: AUTH_MODE
+      type: string
+      value: '1'
+    jaeger-agent-host:
+      env: JAEGER_AGENT_HOST
+      type: string
+      value: jaeger
+    jaeger-agent-port:
+      env: JAEGER_AGENT_PORT
+      type: string
+      value: '6831'
+    order-auth-db:
+      env: ORDER_AUTH_DB
+      type: string
+      value: postgres
+    order-db-host:
+      env: ORDER_DB_HOST
+      type: string
+      value: postgres
+    order-db-password:
+      env: ORDER_DB_PASSWORD
+      type: string
+      value: password
+    order-db-port:
+      env: ORDER_DB_PORT
+      type: string
+      value: '5432'
+    order-db-username:
+      env: ORDER_DB_USERNAME
+      type: string
+      value: postgres
+    order-port:
+      env: ORDER_PORT
+      type: string
+      value: '6000'
+    payment-host:
+      env: PAYMENT_HOST
+      type: string
+      value: payment
+    payment-port:
+      env: PAYMENT_PORT
+      type: string
+      value: '9000'
+    user-host:
+      env: USER_HOST
+      type: string
+      value: user
+    user-port:
+      env: USER_PORT
+      type: string
+      value: '8083'
+
+payment:
+  defines: runnable
+  metadata:
+    name: ACME Fit Payment
+    description: Part of ACME Fitness cloud demo.
+    website: https://github.com/vmwarecloudadvocacy/acme_fitness_demo
+    publisher: nooga
+    icon: https://visualpharm.com/assets/690/Clear%20Shopping%20Cart-595b40b65ba036ed117d19bf.svg
+  containers:
+    payment:
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-payment:4.6
+      ports:
+      - '9000:9000'
+  variables:
+    jaeger-agent-host:
+      env: JAEGER_AGENT_HOST
+      type: string
+      value: jaeger
+    jaeger-agent-port:
+      env: JAEGER_AGENT_PORT
+      type: string
+      value: '6832'
+    payment-port:
+      env: PAYMENT_PORT
+      type: string
+      value: '9000'
+    users-host:
+      env: USERS_HOST
+      type: string
+      value: user
+    users-port:
+      env: USERS_PORT
+      type: string
+      value: '8083'
+
+postgres:
+  defines: runnable
+  metadata:
+    name: ACME Fit Postgres
+    description: Part of ACME Fitness cloud demo.
+    website: https://github.com/vmwarecloudadvocacy/acme_fitness_demo
+    publisher: nooga
+    icon: https://visualpharm.com/assets/690/Clear%20Shopping%20Cart-595b40b65ba036ed117d19bf.svg
+  containers:
+    postgres:
+      image: postgres:12.1-alpine
+      ports:
+      - '5432:5432'
+  variables:
+    postgres-db:
+      env: POSTGRES_DB
+      type: string
+      value: postgres
+    postgres-password:
+      env: POSTGRES_PASSWORD
+      type: string
+      value: password
+    postgres-user:
+      env: POSTGRES_USER
+      type: string
+      value: postgres
+
+redis-db:
+  defines: runnable
+  metadata:
+    name: ACME Fit Redis
+    description: Part of ACME Fitness cloud demo.
+    website: https://github.com/vmwarecloudadvocacy/acme_fitness_demo
+    publisher: nooga
+    icon: https://visualpharm.com/assets/690/Clear%20Shopping%20Cart-595b40b65ba036ed117d19bf.svg
+  containers:
+    db:
+      image: bitnami/redis
+      ports:
+      - '6379:6379'
+  variables:
+    redis-password:
+      env: REDIS_PASSWORD
+      type: string
+      value: secret
+
+user:
+  defines: runnable
+  metadata:
+    name: ACME Fit User
+    description: Part of ACME Fitness cloud demo.
+    website: https://github.com/vmwarecloudadvocacy/acme_fitness_demo
+    publisher: nooga
+    icon: https://visualpharm.com/assets/690/Clear%20Shopping%20Cart-595b40b65ba036ed117d19bf.svg
+  containers:
+    user:
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-user:2.0.1
+      ports:
+      - '8083:8083'
+  variables:
+    jaeger-agent-host:
+      env: JAEGER_AGENT_HOST
+      type: string
+      value: jaeger
+    jaeger-agent-port:
+      env: JAEGER_AGENT_PORT
+      type: string
+      value: '6831'
+    redis-db-host:
+      env: REDIS_DB_HOST
+      type: string
+      value: user-redis-db
+    redis-db-password:
+      env: REDIS_DB_PASSWORD
+      type: string
+      value: secret
+    redis-db-port:
+      env: REDIS_DB_PORT
+      type: string
+      value: '6379'
+    users-db-host:
+      env: USERS_DB_HOST
+      type: string
+      value: user-db
+    users-db-password:
+      env: USERS_DB_PASSWORD
+      type: string
+      value: secret
+    users-db-port:
+      env: USERS_DB_PORT
+      type: string
+      value: '27017'
+    users-db-username:
+      env: USERS_DB_USERNAME
+      type: string
+      value: mongoadmin
+    users-port:
+      env: USERS_PORT
+      type: string
+      value: '8083'
+
+user-db:
+  defines: runnable
+  metadata:
+    name: ACME Fit User DB
+    description: Part of ACME Fitness cloud demo.
+    website: https://github.com/vmwarecloudadvocacy/acme_fitness_demo
+    publisher: nooga
+    icon: https://visualpharm.com/assets/690/Clear%20Shopping%20Cart-595b40b65ba036ed117d19bf.svg
+  containers:
+    db:
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-user-db:latest
+  variables:
+    mongo-initdb-database:
+      env: MONGO_INITDB_DATABASE
+      type: string
+      value: acmefit
+    mongo-initdb-root-password:
+      env: MONGO_INITDB_ROOT_PASSWORD
+      type: string
+      value: secret
+    mongo-initdb-root-username:
+      env: MONGO_INITDB_ROOT_USERNAME
+      type: string
+      value: mongoadmin
+
+user-redis-db:
+  defines: runnable
+  metadata:
+    name: ACME Fit User Redis DB
+    description: Part of ACME Fitness cloud demo.
+    website: https://github.com/vmwarecloudadvocacy/acme_fitness_demo
+    publisher: nooga
+    icon: https://visualpharm.com/assets/690/Clear%20Shopping%20Cart-595b40b65ba036ed117d19bf.svg
+  containers:
+    db:
+      image: bitnami/redis
+      ports:
+      - '6379:6379'
+  variables:
+    redis-password:
+      env: REDIS_PASSWORD
+      type: string
+      value: secret
